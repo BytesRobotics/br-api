@@ -1,12 +1,13 @@
-const jwt = require('jsonwebtoken');
-const config = require('config');
+import jwt from 'jsonwebtoken';
+import config from 'config';
 
-const UserRepository = require('./userRepository');
-const SettingService = require('../settings/settingsService');
+import {UserRepository} from './userRepository';
+import {SettingsService} from '../settings/settingsService';
+
 const cipher = require('../auth/cipherHelper');
 const CustomErrorService = require('../../../utils/customErrorService');
 
-const settingService = new SettingService();
+const settingService = new SettingsService();
 
 export class UserService {
   repository: any;
@@ -93,6 +94,7 @@ export class UserService {
       Promise.reject(new Error('invalid token'));
     }
 
+    // @ts-ignore
     return this.repository.getPhoto(decoded.id);
   }
 

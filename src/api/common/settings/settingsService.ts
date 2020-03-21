@@ -1,31 +1,31 @@
-const SettingsRepository = require('./settingsRepository');
+import { SettingsRepository } from "./settingsRepository";
 
-class SettingsService {
+export class SettingsService {
+  repository: any;
+
   constructor() {
     this.repository = new SettingsRepository();
   }
 
-  findById(id) {
+  findById(id: string) {
     return this.repository.findById(id)
-      .then(user => this.mapSettingsToDto(user));
+      .then((user: any) => this.mapSettingsToDto(user));
   }
 
-  edit(id, dto) {
+  edit(id: string, dto: any) {
     const settings = this.mapDtoToSettings(dto);
     return this.repository.edit(id, settings);
   }
 
-  mapSettingsToDto(item) {
+  mapSettingsToDto(item: any) {
     return item ? {
       themeName: item.themeName,
     } : {};
   }
 
-  mapDtoToSettings(dto) {
+  mapDtoToSettings(dto: any) {
     return dto ? {
       themeName: dto.themeName,
     } : {};
   }
 }
-
-module.exports = SettingsService;

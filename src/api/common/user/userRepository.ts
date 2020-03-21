@@ -3,7 +3,7 @@ import {Db} from 'mongodb';
 const { ObjectID } = require('mongodb');
 const BaseRepository = require('../../../db/baseRepository');
 
-class UserRepository extends BaseRepository {
+export class UserRepository extends BaseRepository {
   constructor() {
     super('users');
   }
@@ -107,5 +107,3 @@ class UserRepository extends BaseRepository {
     //   )
   }
 }
-
-module.exports = UserRepository;
