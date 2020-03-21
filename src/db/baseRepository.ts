@@ -1,7 +1,7 @@
 import {Db, ObjectID} from 'mongodb';
 const getMongoDBClient = require('../db/mongodbClient');
 
-class BaseRepository {
+export class BaseRepository {
 
   dbClient: any;
   collection: string;
@@ -90,5 +90,3 @@ class BaseRepository {
       });
   }
 }
-
-module.exports = BaseRepository;

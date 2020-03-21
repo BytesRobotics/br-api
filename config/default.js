@@ -27,7 +27,7 @@ module.exports = {
 
   db: {
     url: 'mongodb://localhost:27017/bundle-node',
-    name: 'bundle-node',
+    name: process.env.DB_NAME || 'dev',
   },
 
   logger: {

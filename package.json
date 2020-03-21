@@ -3,8 +3,8 @@
   "version": "0.0.1",
   "main": "index.js",
   "scripts": {
-    "dev": "export DB_NAME=DEV && tsc-watch --onSuccess \"node ./dist/server.js\"",
-    "dev:test": "export DB_NAME=TEST && tsc-watch --onSuccess \"node ./dist/server.js\"",
+    "dev": "export DB_NAME=dev && tsc-watch --onSuccess \"node ./dist/src/app.js\"",
+    "dev:test": "export DB_NAME=test && tsc-watch --onSuccess \"node ./dist/src/app.js\"",
     "lint": "tslint -c tslint.json 'src/**/*.ts'",
     "lint:fix": "tslint --fix -c tslint.json 'src/**/*.ts'",
     "pretty-quick": "pretty-quick",

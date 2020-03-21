@@ -18,6 +18,6 @@ module.exports = {
 
   db: {
     url: 'mongodb://localhost:27017/bundle-node-prod',
-    name: 'bundle-node-prod',
+    name: process.env.DB_NAME || 'prod',
   },
 };

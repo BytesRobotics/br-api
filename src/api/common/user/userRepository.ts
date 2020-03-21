@@ -1,7 +1,7 @@
 import {Db} from 'mongodb';
 
 const { ObjectID } = require('mongodb');
-const BaseRepository = require('../../../db/baseRepository');
+import {BaseRepository} from '../../../db/baseRepository';
 
 export class UserRepository extends BaseRepository {
   constructor() {
