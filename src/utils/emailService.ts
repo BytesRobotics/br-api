@@ -1,20 +1,15 @@
-/*
- * Copyright (c) Akveo 2019. All Rights Reserved.
- * Licensed under the Single Application / Multi Application License. 
- * See LICENSE_SINGLE_APP / LICENSE_MULTI_APP in the 'docs' folder for license information on type of purchased license.
- */
-
+// TODO Write
 const config = require('config');
-const logger = require('../utils/logger');
+import {logger} from '../utils/logger';
 
 const { domain } = config.get('frontEnd');
 
-function doSend(email, text) {
+function doSend(email: string, text: string) {
   logger.info(text);
   return Promise.resolve(true);
 }
 
-function sendResetPasswordEmail(email, fullName, token) {
+function sendResetPasswordEmail(email: string, fullName: string, token: string) {
   const text = `Hello ${fullName},`
   + '\nWe have received password reset request. '
   + `To do this, please proceed at ${domain}/#/auth/reset-password?reset_password_token=${token}`

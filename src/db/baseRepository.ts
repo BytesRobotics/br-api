@@ -1,72 +1,76 @@
-const { ObjectID } = require('mongodb');
+import {Db, ObjectID} from 'mongodb';
 const getMongoDBClient = require('../db/mongodbClient');
 
 class BaseRepository {
-  constructor(collectionName) {
+
+  dbClient: any;
+  collection: string;
+
+  constructor(collectionName: string) {
     this.dbClient = getMongoDBClient();
     this.collection = collectionName;
   }
 
   getCount() {
     return this.dbClient
-      .then(db => db
+      .then((db: Db) => db
         .collection(this.collection)
         .countDocuments());
   }
 
-  getCountFiltered(filter = {}) {
+  getCountFiltered(filter: any = {}) {
     return this.dbClient
-      .then(db => {
+      .then((db: Db) => {
         // filtering here
         return db.collection(this.collection).countDocuments(filter.query);
       });
   }
 
-  findById(id) {
+  findById(id: string) {
     return this.dbClient
-      .then(db => db
+      .then((db: Db) => db
         .collection(this.collection)
-        .findOne({ _id: ObjectID(id) }));
+        .findOne({ _id: new ObjectID(id) }));
   }
 
-  add(item) {
+  add(item: string) {
     return this.dbClient
-      .then(db => db
+      .then((db: Db) => db
         .collection(this.collection)
         .insertOne(item));
   }
 
-  addMany(items) {
+  addMany(items: any[]) {
     return this.dbClient
-      .then(db => db
+      .then((db: Db) => db
         .collection(this.collection)
         .insertMany(items));
   }
 
-  edit(id, item) {
+  edit(id: string, item: any) {
     return this.dbClient
-      .then(db => db
+      .then((db: Db) => db
         .collection(this.collection)
-        .updateOne({ _id: ObjectID(id) }, { $set: item }, { upsert: true }));
+        .updateOne({ _id: new ObjectID(id) }, { $set: item }, { upsert: true }));
   }
 
-  delete(id) {
+  delete(id: string) {
     return this.dbClient
-      .then(db => db
+      .then((db: Db) => db
         .collection(this.collection)
-        .remove({ _id: ObjectID(id) }));
+        .remove({ _id: new ObjectID(id) }));
   }
 
   list() {
     return this.dbClient
-      .then(db => db
+      .then((db: Db) => db
         .collection(this.collection)
         .find());
   }
 
-  listFiltered(filter) {
+  listFiltered(filter: any) {
     return this.dbClient
-      .then(db => {
+      .then((db: Db) => {
         const data = db.collection(this.collection)
           .find(filter.query || {}).sort({_id: -1});
 

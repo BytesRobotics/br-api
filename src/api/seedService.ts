@@ -1,14 +1,14 @@
 const UserService = require('./common/user/userService');
 const cipher = require('./common/auth/cipherHelper');
-const logger = require('../utils/logger');
+import {logger} from '../utils/logger';
 
 const userService = new UserService();
 
 class SeedService {
   checkAndSeed() {
-    logger.info('Seed Data')
+    logger.info('Seed Data');
     userService.getCount()
-      .then(count => {
+      .then((count: any) => {
         if (!count) {
           this.seed().then();
         }
@@ -58,7 +58,7 @@ class SeedService {
     return userService.addMany(usersToAdd);
   }
 
-  addRandomUsers(names) {
+  addRandomUsers(names: string[]) {
     const usersToAdd = [];
     for (let i = 0; i < 30; i++) {
       const hash = cipher.saltHashPassword(`pass_${i}`);

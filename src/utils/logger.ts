@@ -14,7 +14,7 @@ if (!fs.existsSync(logDir)) {
   fs.mkdirSync(logDir);
 }
 
-const logger = winston.createLogger({
+export const logger = winston.createLogger({
   transports: [
     new winston.transports.File({
       level: fileLogger.level,
@@ -36,5 +36,3 @@ const logger = winston.createLogger({
   ],
   exitOnError: false,
 });
-
-module.exports = logger;

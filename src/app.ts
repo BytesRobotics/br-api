@@ -6,7 +6,7 @@ import config from 'config';
 const swaggerUi = require('swagger-ui-express');
 
 const swaggerDocument = require('./swagger.json');
-const logger = require('./utils/logger');
+import {logger} from './utils/logger';
 
 require('./passport');
 

@@ -1,8 +1,10 @@
-const mongoClient = require('mongodb').MongoClient;
-const config = require('config');
-const logger = require('../utils/logger');
+import { MongoClient} from 'mongodb';
+import config from 'config';
+import {logger} from '../utils/logger';
 
-let dbClient = null;
+const mongoClient = MongoClient;
+
+let dbClient: any = null;
 
 module.exports = function getMongoDBClient() {
   if (dbClient) {
