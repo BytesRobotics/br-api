@@ -1,8 +1,8 @@
-const express = require('express');
-const cors = require('cors');
-const passport = require('passport');
-const bodyParser = require('body-parser');
-const config = require('config');
+import express, {Errback, Request, Response, NextFunction} from 'express';
+import cors from 'cors';
+import passport from 'passport';
+import bodyParser from 'body-parser';
+import config from 'config';
 const swaggerUi = require('swagger-ui-express');
 
 const swaggerDocument = require('./swagger.json');
@@ -16,18 +16,18 @@ const userController = require('./api/common/user/userController');
 const userPhotoController = require('./api/common/user/userPhotoController');
 const settingsController = require('./api/common/settings/settingsController');
 
-const SeedService = require('./api/seedService');
-const seedService = new SeedService();
+// const SeedService = require('./api/seedService');
+// const seedService = new SeedService();
 
 const app = express();
 const { port, root } = config.get('api');
 
-function logErrors(err, req, res, next) {
+function logErrors(err: Errback, req: Request, res: Response, next: NextFunction) {
   logger.error(err);
   next(err);
 }
 
-function clientErrorHandler(err, req, res, next) {
+function clientErrorHandler(err: Errback, req: Request, res: Response, next: NextFunction) {
   if (req.xhr) {
     res.status(500).send({ error: 'Something went wrong.' });
   } else {
@@ -58,14 +58,14 @@ const customSwaggerOptions = {
   },
 };
 
-app.use(`${root}/swagger`, (req, res, next) => {
+app.use(`${root}/swagger`, (req: any, res: Response, next: NextFunction) => {
   swaggerDocument.host = req.get('host');
   req.swaggerDoc = swaggerDocument;
   next();
 }, swaggerUi.serve, swaggerUi.setup(null, customSwaggerOptions));
 
 // seed data in case of empty data base
-seedService.checkAndSeed();
+// seedService.checkAndSeed();
 
 // routes for common controllers
 app.use(`${root}/auth`, authController);
@@ -78,10 +78,6 @@ app.use(`${root}/settings`, auth, settingsController);
 
 app.use(logErrors);
 app.use(clientErrorHandler);
-
-app.get('/', (req, res) => {
-  res.send('Hello World!');
-});
 
 app.listen(port);
 

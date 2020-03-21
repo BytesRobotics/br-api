@@ -1,13 +1,16 @@
-const passport = require('passport');
-// const refresh = require('passport-oauth2-refresh')
-const LocalStrategy = require('passport-local').Strategy;
+import passport from 'passport';
+import passportLocal from "passport-local";
+
+
 // const OAuth2Strategy = require('passport-oauth2');
 // const OAuth2RefreshTokenStrategy = require('passport-oauth2-middleware').Strategy;
-const passportJWT = require('passport-jwt');
+import passportJwt from "passport-jwt";
 
-const JWTStrategy = passportJWT.Strategy;
-const ExtractJWT = passportJWT.ExtractJwt;
-const config = require('config');
+const LocalStrategy = passportLocal.Strategy;
+const JWTStrategy = passportJwt.Strategy;
+const ExtractJWT = passportJwt.ExtractJwt;
+
+import config from 'config';
 
 const cipher = require('./api/common/auth/cipherHelper');
 const UserService = require('./api/common/user/userService');
@@ -18,10 +21,10 @@ passport.use(new LocalStrategy({
   usernameField: 'email',
   passwordField: 'password',
 },
-(email, password, cb) => {
+(email: string, password: string, cb: any) => {
   userService
     .findByEmail(email)
-    .then(user => {
+    .then((user: any) => {
       const { passwordHash } = cipher.sha512(password, user.salt);
 
       if (!user || user.passwordHash !== passwordHash) {
