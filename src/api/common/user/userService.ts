@@ -8,7 +8,9 @@ const CustomErrorService = require('../../../utils/customErrorService');
 
 const settingService = new SettingService();
 
-class UserService {
+export class UserService {
+  repository: any;
+
   constructor() {
     this.repository = new UserRepository();
   }
@@ -17,17 +19,17 @@ class UserService {
     return this.repository.getCount();
   }
 
-  findByEmail(email) {
+  findByEmail(email: string) {
     return this.repository.findByEmail(email);
   }
 
-  findById(id) {
+  findById(id: string) {
     return this.repository.findById(id)
-      .then(user => this.mapUserToDto(user));
+      .then((user: any) => this.mapUserToDto(user));
   }
 
-  addUser(user) {
-    return this.repository.findByEmail(user.email).then((existingUser) => {
+  addUser(user: any) {
+    return this.repository.findByEmail(user.email).then((existingUser: any) => {
       if (existingUser) {
         throw new Error('User already exists');
       }
@@ -35,15 +37,15 @@ class UserService {
     })
   }
 
-  addMany(users) {
+  addMany(users: any) {
     return this.repository.addMany(users);
   }
 
-  editUser(dto, userId) {
+  editUser(dto: any, userId: string) {
     const user = this.mapDtoToUser(dto);
 
     return this.repository.findAllUsersByEmail(user.email)
-      .then((users) => {
+      .then((users: any) => {
         if (this._isDuplicateEmail(users, userId)) {
           const errorData = {
             error: {
@@ -59,30 +61,30 @@ class UserService {
         return this.repository.edit(userId, user);
       })
       .then(() => this.findById(userId))
-      .catch(error => {
+      .catch((error: any) => {
         throw error;
       });
   }
 
-  editCurrentUser(dto, userId) {
+  editCurrentUser(dto: object, userId: string) {
     return this.editUser(dto, userId)
-      .then(user => {
+      .then((user: any) => {
         return cipher.generateResponseTokens(user);
       })
-      .catch(error => {
+      .catch((error: any) => {
         throw error;
       });
   }
 
-  deleteUser(id) {
+  deleteUser(id: string) {
     return this.repository.delete(id);
   }
 
-  changePassword(id, salt, passwordHash) {
+  changePassword(id: string, salt: any, passwordHash: any) {
     return this.repository.changePassword(id, salt, passwordHash);
   }
 
-  getPhoto(token) {
+  getPhoto(token: string) {
     let decoded;
 
     try {
@@ -94,20 +96,20 @@ class UserService {
     return this.repository.getPhoto(decoded.id);
   }
 
-  list(filter) {
+  list(filter: any) {
     return Promise.all([
       this.repository.listFiltered(filter),
       this.repository.getCountFiltered(filter),
     ])
       .then(([data, count]) => {
         return {
-          items: data.map(item => this.mapUserToDto(item)),
+          items: data.map((item: any) => this.mapUserToDto(item)),
           totalCount: count,
         };
       });
   }
 
-  mapUserToDto(user) {
+  mapUserToDto(user: any) {
     return user ? {
       id: user._id,
       email: user.email,
@@ -121,11 +123,11 @@ class UserService {
     } : {};
   }
 
-  getSettings(settings) {
+  getSettings(settings: any) {
     return settings && settings.length ? settings[0] : settings;
   }
 
-  mapDtoToUser(dto) {
+  mapDtoToUser(dto: any) {
     return dto ? {
       email: dto.email,
       age: dto.age,
@@ -137,7 +139,7 @@ class UserService {
     } : {};
   }
 
-  _isDuplicateEmail(users, userId) {
+  _isDuplicateEmail(users: any, userId: string) {
     if (users && users.length === 0) {
       return false;
     }
@@ -146,8 +148,6 @@ class UserService {
       return true;
     }
 
-    return users.some(user => user._id.toString() !== userId.toString());
+    return users.some((user: any) => user._id.toString() !== userId.toString());
   }
 }
-
-module.exports = UserService;

@@ -13,7 +13,7 @@ const ExtractJWT = passportJwt.ExtractJwt;
 import config from 'config';
 
 const cipher = require('./api/common/auth/cipherHelper');
-const UserService = require('./api/common/user/userService');
+import {UserService} from './api/common/user/userService';
 
 const userService = new UserService();
 

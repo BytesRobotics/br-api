@@ -1,7 +1,7 @@
 const jwt = require('jsonwebtoken');
 const config = require('config');
 
-const UserService = require('../user/userService');
+import { UserService } from "../user/userService";
 const cipher = require('./cipherHelper');
 const emailService = require('../../../utils/emailService');
 

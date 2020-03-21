@@ -1,7 +1,7 @@
-class CustomErrorService extends Error {
-  metadata: Object;
+export class CustomErrorService extends Error {
+  metadata: any;
 
-  constructor(message: string, metadata: Object = {}) {
+  constructor(message: string, metadata: object = {}) {
     super();
 
     Error.captureStackTrace(this, this.constructor);
@@ -10,5 +10,3 @@ class CustomErrorService extends Error {
     this.metadata = metadata;
   }
 }
-
-module.exports = CustomErrorService;

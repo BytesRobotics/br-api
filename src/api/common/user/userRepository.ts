@@ -1,3 +1,5 @@
+import {Db} from 'mongodb';
+
 const { ObjectID } = require('mongodb');
 const BaseRepository = require('../../../db/baseRepository');
 
@@ -6,9 +8,9 @@ class UserRepository extends BaseRepository {
     super('users');
   }
 
-  findById(id) {
+  findById(id: string) {
     return this.dbClient
-      .then(db => db
+      .then((db: Db) => db
         .collection(this.collection)
         .aggregate([
           { $match: { _id: ObjectID(id) } },
@@ -23,44 +25,44 @@ class UserRepository extends BaseRepository {
           { $limit: 1 },
         ])
         .toArray())
-      .then(data => (data && data.length ? data[0] : data));
+      .then((data: any) => (data && data.length ? data[0] : data));
   }
 
-  findByEmail(email) {
+  findByEmail(email: string) {
     return this.dbClient
-      .then(db => db
+      .then((db: Db) => db
         .collection(this.collection)
         .findOne({ email }));
   }
 
-  findAllUsersByEmail(email) {
+  findAllUsersByEmail(email: string) {
     return this.dbClient
-      .then(db => db
+      .then((db: Db) => db
         .collection(this.collection)
         .find({ email })
         .toArray());
   }
 
-  changePassword(id, salt, passwordHash) {
+  changePassword(id: string, salt: any, passwordHash: any) {
     return this.dbClient
-      .then(db => db
+      .then((db: Db) => db
         .collection(this.collection)
         .updateOne({ _id: ObjectID(id) }, { $set: { salt, passwordHash } }));
   }
 
-  listFiltered(filter) {
+  listFiltered(filter: any) {
     const listFilter = this._getListFilter(filter);
 
     return super.listFiltered(listFilter);
   }
 
-  getCountFiltered(filter) {
+  getCountFiltered(filter: any) {
     const listFilter = this._getListFilter(filter);
 
     return super.getCountFiltered(listFilter);
   }
 
-  _getListFilter(filter) {
+  _getListFilter(filter: any) {
     const copyFilter = { ...filter };
 
     copyFilter.query = {};
@@ -95,7 +97,7 @@ class UserRepository extends BaseRepository {
   }
 
   // TODO: implement photo return
-  getPhoto(userId) {
+  getPhoto(userId: string) {
     const defaultFileName = 'default-img.jpg';
 
     return Promise.resolve(defaultFileName);
