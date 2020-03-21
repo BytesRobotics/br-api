@@ -87,10 +87,10 @@ class AuthService {
       throw new Error("Invalid token format");
     }
 
-    // @ts-ignore
     const tokenContent = jwt.decode(
       token.refresh_token,
       config.get("auth.jwt.refreshTokenSecret"),
+      // @ts-ignore
       { expiresIn: config.get("auth.jwt.refreshTokenLife") }
     );
 
