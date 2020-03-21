@@ -1,4 +1,4 @@
-import NumberService from './number.service';
+import NumberService from "./number.service";
 
 function randomDate(startDate: Date, endDate: Date): Date {
   if (!startDate) {
@@ -8,8 +8,10 @@ function randomDate(startDate: Date, endDate: Date): Date {
     endDate = new Date();
   }
 
-  return new Date(startDate.getTime()
-    + NumberService.randomInt(endDate.getTime() - startDate.getTime()));
+  return new Date(
+    startDate.getTime() +
+      NumberService.randomInt(endDate.getTime() - startDate.getTime())
+  );
 }
 
 function getYearStart(date: Date): Date {
@@ -37,8 +39,8 @@ function endOfMonth(date: Date) {
 
 function startOfWeek(date: Date): Date {
   const day = date.getDay();
-  const startOfWeek = date.getDate() - day + (day === 0 ? -6 : 1); // adjust when day is sunday
-  return new Date(date.getFullYear(), date.getMonth(), startOfWeek);
+  const startOfWeek1 = date.getDate() - day + (day === 0 ? -6 : 1); // adjust when day is sunday
+  return new Date(date.getFullYear(), date.getMonth(), startOfWeek1);
 }
 
 function endOfWeek(date: Date): Date {
@@ -58,12 +60,25 @@ function getWeekBefore(): Date {
   return weekBefore;
 }
 
-const shortMonthsNames = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+const shortMonthsNames = [
+  "Jan",
+  "Feb",
+  "Mar",
+  "Apr",
+  "May",
+  "Jun",
+  "Jul",
+  "Aug",
+  "Sep",
+  "Oct",
+  "Nov",
+  "Dec"
+];
 function getShortMonthName(monthIndex: number): string {
   return shortMonthsNames[monthIndex];
 }
 
-const shortWeekDayNames = ['Mon', 'Tue', 'Wen', 'Thu', 'Fri', 'Sat', 'Sun'];
+const shortWeekDayNames = ["Mon", "Tue", "Wen", "Thu", "Fri", "Sat", "Sun"];
 function getShortWeekDay(dayIndex: number): string {
   return shortWeekDayNames[dayIndex - 1];
 }
@@ -89,5 +104,5 @@ module.exports = {
   endOfMonth,
   startOfWeek,
   endOfWeek,
-  addDays,
+  addDays
 };

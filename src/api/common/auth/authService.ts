@@ -1,9 +1,9 @@
-import jwt from 'jsonwebtoken';
-import config from 'config';
+import jwt from "jsonwebtoken";
+import config from "config";
 
 import { UserService } from "../user/userService";
-import {CipherHelper} from './cipherHelper';
-import {EmailService} from '../../../utils/emailService';
+import { CipherHelper } from "./cipherHelper";
+import { EmailService } from "../../../utils/emailService";
 
 const emailService = new EmailService();
 const cipherHelper = new CipherHelper();
@@ -18,20 +18,23 @@ class AuthService {
   register(user: any) {
     const { email } = user;
 
-    return this.userService.findByEmail(email)
+    return this.userService
+      .findByEmail(email)
       .then((existingUser: any) => {
         if (existingUser) {
-          throw new Error('User already exists');
+          throw new Error("User already exists");
         }
 
-        const { salt, passwordHash } = cipherHelper.saltHashPassword(user.password);
+        const { salt, passwordHash } = cipherHelper.saltHashPassword(
+          user.password
+        );
         const newUser = {
           email: user.email,
           fullName: user.fullName,
-          role: 'user',
+          role: "user",
           age: 18,
           salt,
-          passwordHash,
+          passwordHash
         };
 
         return this.userService.addUser(newUser);
@@ -43,23 +46,34 @@ class AuthService {
       });
   }
 
-  resetPassword(password: any, confirmPassword: any, userId: any, resetPasswordToken: any) {
+  resetPassword(
+    password: any,
+    confirmPassword: any,
+    userId: any,
+    resetPasswordToken: any
+  ) {
     let currentUserId = userId;
 
     if (password.length < 4) {
-      return Promise.reject(new Error('Password should be longer than 4 characters'));
+      return Promise.reject(
+        new Error("Password should be longer than 4 characters")
+      );
     }
 
     if (password !== confirmPassword) {
-      return Promise.reject(new Error('Password and its confirmation do not match.'));
+      return Promise.reject(
+        new Error("Password and its confirmation do not match.")
+      );
     }
 
     if (resetPasswordToken) {
-      const tokenContent = cipherHelper.decipherResetPasswordToken(resetPasswordToken);
+      const tokenContent = cipherHelper.decipherResetPasswordToken(
+        resetPasswordToken
+      );
       currentUserId = tokenContent.userId;
 
       if (new Date().getTime() > tokenContent.valid) {
-        return Promise.reject(new Error('Reset password token has expired.'));
+        return Promise.reject(new Error("Reset password token has expired."));
       }
     }
 
@@ -70,11 +84,15 @@ class AuthService {
 
   refreshToken(token: any) {
     if (!token.access_token || !token.refresh_token) {
-      throw new Error('Invalid token format');
+      throw new Error("Invalid token format");
     }
 
     // @ts-ignore
-    const tokenContent = jwt.decode(token.refresh_token, config.get('auth.jwt.refreshTokenSecret'), { expiresIn: config.get('auth.jwt.refreshTokenLife') },);
+    const tokenContent = jwt.decode(
+      token.refresh_token,
+      config.get("auth.jwt.refreshTokenSecret"),
+      { expiresIn: config.get("auth.jwt.refreshTokenLife") }
+    );
 
     return this.userService.findById(tokenContent.id).then((user: any) => {
       return cipherHelper.generateResponseTokens(user);
@@ -88,10 +106,14 @@ class AuthService {
         if (user) {
           const token = cipherHelper.generateResetPasswordToken(user._id);
 
-          return emailService.sendResetPasswordEmail(email, user.fullName, token);
+          return emailService.sendResetPasswordEmail(
+            email,
+            user.fullName,
+            token
+          );
         }
 
-        throw new Error('There is no defined email in the system.');
+        throw new Error("There is no defined email in the system.");
       })
       .catch((error: any) => {
         throw error;

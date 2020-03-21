@@ -8,7 +8,8 @@ export class SettingsService {
   }
 
   findById(id: string) {
-    return this.repository.findById(id)
+    return this.repository
+      .findById(id)
       .then((user: any) => this.mapSettingsToDto(user));
   }
 
@@ -18,14 +19,18 @@ export class SettingsService {
   }
 
   mapSettingsToDto(item: any) {
-    return item ? {
-      themeName: item.themeName,
-    } : {};
+    return item
+      ? {
+          themeName: item.themeName
+        }
+      : {};
   }
 
   mapDtoToSettings(dto: any) {
-    return dto ? {
-      themeName: dto.themeName,
-    } : {};
+    return dto
+      ? {
+          themeName: dto.themeName
+        }
+      : {};
   }
 }

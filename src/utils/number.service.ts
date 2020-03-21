@@ -1,5 +1,5 @@
 export default class NumberService {
-  static getSequentialRange(from: any, count: number): Array<number> {
+  static getSequentialRange(from: any, count: number): number[] {
     return Array.from(Array(count), (x, i) => i + from);
   }
 
@@ -11,7 +11,6 @@ export default class NumberService {
     return Math.floor(Math.random() * max);
   }
 }
-
 
 // module.exports = {
 //   getSequentialRange,

@@ -1,0 +1,7 @@
+language: node_js
+install: npm install
+node_js:
+  - "8"
+services: mongodb
+script: npm test
+after_success: npm run coverage

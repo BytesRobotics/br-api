@@ -3,13 +3,15 @@
   "version": "0.0.1",
   "main": "index.js",
   "scripts": {
-    "conventional-changelog": "conventional-changelog",
-    "start": "node ./src/app",
-    "dev:ts": "tsc-watch --onSuccess \"node ./dist/src/app.js\"",
-    "dev": "./node_modules/.bin/nodemon ./src/app",
-    "start:prod": "export NODE_ENV=production&&node ./src/app",
-    "lint": "eslint --report-unused-disable-directives .",
-    "lint:fix": "eslint --fix ."
+    "dev": "export DB_NAME=DEV && tsc-watch --onSuccess \"node ./dist/server.js\"",
+    "dev:test": "export DB_NAME=TEST && tsc-watch --onSuccess \"node ./dist/server.js\"",
+    "lint": "tslint -c tslint.json 'src/**/*.ts'",
+    "lint:fix": "tslint --fix -c tslint.json 'src/**/*.ts'",
+    "pretty-quick": "pretty-quick",
+    "test": "export DB_NAME=TEST && tsc && mocha **/*.spec.js",
+    "test:dev": "tsc-watch --onSuccess \" mocha **/*.spec.js\"",
+    "test:coverage": "tsc && nyc --reporter=lcov --reporter=text-summary mocha **/*.spec.js",
+    "coverage": "nyc npm test && nyc report --reporter=text-lcov | coveralls"
   },
   "repository": {
     "type": "git",
